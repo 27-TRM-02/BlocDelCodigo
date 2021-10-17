@@ -7,8 +7,7 @@ import javax.swing.JOptionPane;
 
 /**
  *********************BLOC DE NOTAS - CETYS
- *
- *************************************
+
  ** @author trm = Tomás Rodríguez-Mata Suárez
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
@@ -39,7 +38,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         AbrirItem = new javax.swing.JMenuItem();
         GuardarItem = new javax.swing.JMenuItem();
         GuardarComoItem = new javax.swing.JMenuItem();
-        AyudaMenu = new javax.swing.JMenu();
+        InfoMenu = new javax.swing.JMenu();
         DesarrolladorMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -93,7 +92,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         MenuPrincipal.add(ArchivoMenu);
 
-        AyudaMenu.setText("A cerca de...");
+        InfoMenu.setText("Información");
 
         DesarrolladorMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_user_40px.png"))); // NOI18N
         DesarrolladorMenu.setText("Dasarrollado");
@@ -102,9 +101,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 DesarrolladorMenuActionPerformed(evt);
             }
         });
-        AyudaMenu.add(DesarrolladorMenu);
+        InfoMenu.add(DesarrolladorMenu);
 
-        MenuPrincipal.add(AyudaMenu);
+        MenuPrincipal.add(InfoMenu);
 
         setJMenuBar(MenuPrincipal);
 
@@ -135,28 +134,34 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_GuardarItemActionPerformed
 
     private void GuardarComoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarComoItemActionPerformed
-        guardarComo();;
+        guardarComo();
     }//GEN-LAST:event_GuardarComoItemActionPerformed
 
     private void NuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevoItemActionPerformed
         archivoNuevo();
     }//GEN-LAST:event_NuevoItemActionPerformed
 
+    /**
+     * Resetea el textArea y pregunta si se quieren guardar lo escrito
+     */
     public void archivoNuevo() {
+        // Si no hay texto ecrito
         if (jTextArea1.getText().isEmpty()) {
             jTextArea1.setText("");
         } else {
+            // Si hay texto, pregunta si se quiere guadarComo
             int respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres guardar los cambios?");
+            // Ha seleccionado OK
             if (respuesta == 0) {
                 guardarComo();
-            } else if (respuesta == 1) {
+            } else if (respuesta == 1) { // Ha seleccionado cancelar
                 jTextArea1.setText("");
             }
         }
     }
 
     /**
-     *
+     * Guarda archivo en la misma ruta que se ha abierto
      */
     public void guardar() {
         try {
@@ -171,10 +176,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     /**
-     *
+     * Guarda archivo en la ruta seleccionada
      */
     public void guardarComo() {
+        // Selección de la ruta donde se quiere guardar
         int seleccion = jFileChooser1.showSaveDialog(jTextArea1);
+        // Se ha seleccionado correctamente la ruta
         if (seleccion == 0) {
             try {
                 PrintWriter writer = null;
@@ -202,7 +209,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     // Guardamos la nueva ruta seleccionada donde se quiere guardar el archivo
                     openedFilePath = archivo.getAbsolutePath();
                 }
-                // Guarda en la misma ruta que se ha abierto
+                // Nombre del archivo en el title de la ventana
                 setTitle(archivo.getName() + "Bloc de notas");
                 writer.close();
             } catch (FileNotFoundException ex) {
@@ -287,10 +294,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AbrirItem;
     private javax.swing.JMenu ArchivoMenu;
-    private javax.swing.JMenu AyudaMenu;
     private javax.swing.JMenuItem DesarrolladorMenu;
     private javax.swing.JMenuItem GuardarComoItem;
     private javax.swing.JMenuItem GuardarItem;
+    private javax.swing.JMenu InfoMenu;
     private javax.swing.JMenuBar MenuPrincipal;
     private javax.swing.JMenuItem NuevoItem;
     private javax.swing.JScrollPane TextArea;
