@@ -2,22 +2,20 @@
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import javax.security.auth.callback.ConfirmationCallback;
+import javax.swing.JOptionPane;
 
 /**
+ *********************BLOC DE NOTAS - CETYS
  *
- * @author trm
+ *************************************
+ ** @author trm = Tomás Rodríguez-Mata Suárez
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form VentanaPrincipal
-     */
+    // Variable global que almacena la ruta del archivo abierto
+    String openedFilePath = "";
+
     public VentanaPrincipal() {
         initComponents();
     }
@@ -37,13 +35,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         MenuPrincipal = new javax.swing.JMenuBar();
         ArchivoMenu = new javax.swing.JMenu();
+        NuevoItem = new javax.swing.JMenuItem();
         AbrirItem = new javax.swing.JMenuItem();
         GuardarItem = new javax.swing.JMenuItem();
+        GuardarComoItem = new javax.swing.JMenuItem();
         AyudaMenu = new javax.swing.JMenu();
-        InfoMenu = new javax.swing.JMenuItem();
+        DesarrolladorMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Bloc del codigo");
+        setTitle("Bloc de notas");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -51,6 +51,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         ArchivoMenu.setText("Archivo");
 
+        NuevoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        NuevoItem.setText("Nuevo");
+        NuevoItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NuevoItemActionPerformed(evt);
+            }
+        });
+        ArchivoMenu.add(NuevoItem);
+
+        AbrirItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         AbrirItem.setText("Abrir");
         AbrirItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -59,6 +69,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         ArchivoMenu.add(AbrirItem);
 
+        GuardarItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         GuardarItem.setText("Guardar");
         GuardarItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -67,17 +78,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         ArchivoMenu.add(GuardarItem);
 
-        MenuPrincipal.add(ArchivoMenu);
-
-        AyudaMenu.setText("Ayuda");
-
-        InfoMenu.setText("Info");
-        InfoMenu.addActionListener(new java.awt.event.ActionListener() {
+        GuardarComoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        GuardarComoItem.setText("Guardar como");
+        GuardarComoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InfoMenuActionPerformed(evt);
+                GuardarComoItemActionPerformed(evt);
             }
         });
-        AyudaMenu.add(InfoMenu);
+        ArchivoMenu.add(GuardarComoItem);
+
+        MenuPrincipal.add(ArchivoMenu);
+
+        AyudaMenu.setText("A cerca de...");
+
+        DesarrolladorMenu.setText("Dasarrollado");
+        DesarrolladorMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DesarrolladorMenuActionPerformed(evt);
+            }
+        });
+        AyudaMenu.add(DesarrolladorMenu);
 
         MenuPrincipal.add(AyudaMenu);
 
@@ -97,60 +117,135 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void InfoMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InfoMenuActionPerformed
-        jOptionPane1.showMessageDialog(null, "Desarrollado en Cetys por:\n Tomás Rodríguez-Mata");
-    }//GEN-LAST:event_InfoMenuActionPerformed
+    private void DesarrolladorMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DesarrolladorMenuActionPerformed
+        JOptionPane.showMessageDialog(null, "Bloc de notas desarrollado en Cetys por:\n Tomás Rodríguez-Mata");
+    }//GEN-LAST:event_DesarrolladorMenuActionPerformed
 
     private void AbrirItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirItemActionPerformed
         abrirFile();
     }//GEN-LAST:event_AbrirItemActionPerformed
 
     private void GuardarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarItemActionPerformed
-        guardarFile();
+        guardar();
     }//GEN-LAST:event_GuardarItemActionPerformed
 
-    public void guardarFile(){
+    private void GuardarComoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarComoItemActionPerformed
+        guardarComo();;
+    }//GEN-LAST:event_GuardarComoItemActionPerformed
+
+    private void NuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevoItemActionPerformed
+        archivoNuevo();
+    }//GEN-LAST:event_NuevoItemActionPerformed
+
+    public void archivoNuevo() {
+        if (jTextArea1.getText().isEmpty()) {
+            jTextArea1.setText("");
+        } else {
+            int respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres guardar los cambios?");
+            if (respuesta == 0) {
+                guardarComo();
+            } else if (respuesta == 1) {
+                jTextArea1.setText("");
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    public void guardar() {
+        try {
+            PrintWriter writer = new PrintWriter(openedFilePath);
+            writer.write(jTextArea1.getText());
+            writer.close();
+            JOptionPane.showMessageDialog(null, "Se ha actualizado el archivo");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Hubo algun problema en guardar el archivo" + ex.toString());
+        }
+    }
+
+    /**
+     *
+     */
+    public void guardarComo() {
         int seleccion = jFileChooser1.showSaveDialog(jTextArea1);
-        if (seleccion==0){
+        if (seleccion == 0) {
             try {
                 PrintWriter writer = null;
                 File archivo = jFileChooser1.getSelectedFile();
                 writer = new PrintWriter(archivo);
-                writer.print(jTextArea1.getText());
+                //Antes de escribir, comprobar si el fichero existe
+                if (archivo.exists()) {
+                    // Si el archivo es el mismo que se abrio, actualiza
+                    if (openedFilePath.equals(archivo.getAbsolutePath())) {
+                        writer.print(jTextArea1.getText());
+                        JOptionPane.showMessageDialog(null, "Se ha actualizado el archivo");
+                    } else {     // El archivo ya existe y no es el mismo que se abrio
+                        // Preguntamos si desea sobreescribir los datos
+                        int respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres sobreescribir el archivo?");
+                        if (respuesta == 0) {
+                            writer.print(jTextArea1.getText());
+                            JOptionPane.showMessageDialog(null, "Se ha sobreescrito el archivo");
+                            // Guardamos la nueva ruta seleccionada donde se quiere guardar el archivo
+                            openedFilePath = archivo.getAbsolutePath();
+                        }
+                    }
+                } else { // Se desea crear un nuevo archivo
+                    writer.print(jTextArea1.getText());
+                    JOptionPane.showMessageDialog(null, "Se ha generado el nuevo archivo ");
+                    // Guardamos la nueva ruta seleccionada donde se quiere guardar el archivo
+                    openedFilePath = archivo.getAbsolutePath();
+                }
+                // Guarda en la misma ruta que se ha abierto
+                setTitle(archivo.getName() + "Bloc de notas");
                 writer.close();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("Hubo algun problema en guardar el archivo" + ex.toString()); 
+                System.out.println("Hubo algun problema en guardar el archivo" + ex.toString());
             }
         }
     }
-    
-    public void abrirFile(){
+
+    /**
+     * Método para abrir y escribir el archivo seleccionado en el TextArea
+     */
+    public void abrirFile() {
+        archivoNuevo();
         int seleccion = jFileChooser1.showOpenDialog(TextArea);
-        // Si abren un archivo = 0
-        if (seleccion==0){
+        // Si se selecciona archivo válido == 0, sino != 0
+        if (seleccion == 0) {
             try {
                 BufferedReader reader = null;
                 File archivo = jFileChooser1.getSelectedFile();
+                // Guardamos el archivo seleccionado en un BufferedReader
                 reader = new BufferedReader(new FileReader(archivo));
+                archivo.setWritable(true);
+                // Guardamos el fichero abierto en el atributo
+                openedFilePath = archivo.getAbsolutePath();
                 // Guarda primera linea del documento
                 String linea = reader.readLine();
-                while(linea!=null){
+
+                // Guarda una por una cada linea del archivo
+                while (linea != null) {
                     jTextArea1.append(linea);
+                    // Genera un cambio de linea, una vez sacada la linea
                     jTextArea1.append(System.getProperty("line.separator"));
                     linea = reader.readLine();
                 }
+                setTitle(archivo.getName()+": Bloc de notas");
+                // Cerramos el bufferedReader
                 reader.close();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("Archivo no encontrado" + ex.toString()); 
+                System.out.println("Archivo no encontrado" + ex.toString());
             } catch (IOException ex) {
                 Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("Error al acceder al fichero para leerlo" + ex.toString()); 
+                System.out.println("Error al acceder al fichero para leerlo" + ex.toString());
             }
         }
     }
-    
+
     /**
      * @param args
      */
@@ -179,10 +274,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VentanaPrincipal().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new VentanaPrincipal().setVisible(true);
         });
     }
 
@@ -190,9 +283,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem AbrirItem;
     private javax.swing.JMenu ArchivoMenu;
     private javax.swing.JMenu AyudaMenu;
+    private javax.swing.JMenuItem DesarrolladorMenu;
+    private javax.swing.JMenuItem GuardarComoItem;
     private javax.swing.JMenuItem GuardarItem;
-    private javax.swing.JMenuItem InfoMenu;
     private javax.swing.JMenuBar MenuPrincipal;
+    private javax.swing.JMenuItem NuevoItem;
     private javax.swing.JScrollPane TextArea;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JOptionPane jOptionPane1;
