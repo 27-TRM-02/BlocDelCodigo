@@ -52,6 +52,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ArchivoMenu.setText("Archivo");
 
         NuevoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        NuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_new_40px.png"))); // NOI18N
         NuevoItem.setText("Nuevo");
         NuevoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -61,6 +62,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ArchivoMenu.add(NuevoItem);
 
         AbrirItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        AbrirItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_open_delivered_box_50px.png"))); // NOI18N
         AbrirItem.setText("Abrir");
         AbrirItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,6 +72,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ArchivoMenu.add(AbrirItem);
 
         GuardarItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        GuardarItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save_close_30px.png"))); // NOI18N
         GuardarItem.setText("Guardar");
         GuardarItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,6 +82,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ArchivoMenu.add(GuardarItem);
 
         GuardarComoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        GuardarComoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save_all_30px.png"))); // NOI18N
         GuardarComoItem.setText("Guardar como");
         GuardarComoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,6 +95,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         AyudaMenu.setText("A cerca de...");
 
+        DesarrolladorMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_user_40px.png"))); // NOI18N
         DesarrolladorMenu.setText("Dasarrollado");
         DesarrolladorMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
